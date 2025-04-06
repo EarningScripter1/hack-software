@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WINGO HACK  PRO</title>
+    <title>WINGO HACK PRO</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap');
@@ -44,7 +44,7 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Game Selector */
+        /* Custom Select Container */
         .game-selector-container {
             width: 100%;
             max-width: 450px;
@@ -53,7 +53,8 @@
             z-index: 10;
         }
 
-        .game-selector {
+        /* Custom Select Button */
+        .game-selector-btn {
             width: 100%;
             padding: 12px 15px;
             background: rgba(15, 23, 42, 0.95);
@@ -62,35 +63,95 @@
             color: var(--light);
             font-size: 14px;
             outline: none;
-            appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
             cursor: pointer;
             box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
             transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
-        .game-selector:hover {
+        .game-selector-btn:hover {
             box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
         }
 
-        .game-selector:focus {
-            border-color: var(--secondary);
+        .game-selector-btn .selected-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .game-selector option {
-            background: var(--dark);
-            color: var(--light);
-            padding: 10px;
+        .game-selector-btn .selected-option img {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
         }
 
-        .selector-icon {
+        /* Custom Dropdown */
+        .game-selector-dropdown {
             position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            pointer-events: none;
-            color: var(--primary-light);
+            top: 100%;
+            left: 0;
+            width: 100%;
+            max-height: 300px;
+            overflow-y: auto;
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid var(--primary-light);
+            border-radius: 12px;
+            margin-top: 5px;
+            z-index: 100;
+            display: none;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .game-selector-dropdown.show {
+            display: block;
+        }
+
+        .game-selector-search {
+            padding: 10px;
+            position: sticky;
+            top: 0;
+            background: rgba(15, 23, 42, 0.95);
+            z-index: 1;
+        }
+
+        .game-selector-search input {
+            width: 100%;
+            padding: 8px 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--primary-light);
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .game-selector-options {
+            padding: 5px 0;
+        }
+
+        .game-option {
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .game-option:hover {
+            background: rgba(59, 130, 246, 0.2);
+        }
+
+        .game-option img {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+        }
+
+        .game-option.active {
+            background: var(--primary);
         }
 
         /* Main Container */
@@ -583,30 +644,21 @@
 </head>
 <body>
     <div class="game-selector-container">
-        <select class="game-selector" id="gameSelector">
-            <option value="" disabled selected>SELECT YOUR GAME</option>
-            <option value="91Club Hack">91Club Hack</option>
-            <option value="55Club Hack">55Club Hack</option>
-            <option value="In999 Hack">In999 Hack</option>
-            <option value="Okwin Hack">Okwin Hack</option>
-            <option value="Tiranga Hack">Tiranga Hack</option>
-            <option value="BigDaddy Hack">BigDaddy Hack</option>
-            <option value="Big Mumbai Hack">Big Mumbai Hack</option>
-            <option value="Daman Games Hack">Daman Games Hack</option>
-            <option value="Diuwin Hack">Diuwin Hack</option>
-            <option value="Bdgwin Hack">Bdgwin Hack</option>
-            <option value="Tc Lottery Hack">Tc Lottery Hack</option>
-            <option value="Jalwa Win Hack">Jalwa Win Hack</option>
-            <option value="82 Lottery Hack">82 Lottery Hack</option>
-            <option value="Aviator God Hack">Aviator God Hack</option>
-            <option value="Bounty Game Hack">Bounty Game Hack</option>
-            <option value="Lottery7 Hack">Lottery7 Hack</option>
-            <option value="Kwg Game Hack">Kwg Game Hack</option>
-            <option value="88 Club Hack">88 Club Hack</option>
-            <option value="Goa Games Hack">Goa Games Hack</option>
-            <option value="Sikkim Hack">Sikkim Hack</option>
-        </select>
-        <i class="fas fa-chevron-down selector-icon"></i>
+        <div class="game-selector-btn" id="gameSelectorBtn">
+            <div class="selected-option">
+                <img src="default-logo.png" id="selectedGameLogo" alt="Game Logo">
+                <span id="selectedGameName">SELECT YOUR GAME</span>
+            </div>
+            <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="game-selector-dropdown" id="gameSelectorDropdown">
+            <div class="game-selector-search">
+                <input type="text" placeholder="Search games..." id="gameSearch">
+            </div>
+            <div class="game-selector-options" id="gameOptions">
+                <!-- Options will be added dynamically -->
+            </div>
+        </div>
     </div>
 
     <div class="container disabled-content" id="mainContainer">
@@ -769,28 +821,79 @@
 
         // Game selection functionality
         document.addEventListener('DOMContentLoaded', () => {
-            const gameSelector = document.getElementById('gameSelector');
+            const gameSelectorBtn = document.getElementById('gameSelectorBtn');
+            const gameSelectorDropdown = document.getElementById('gameSelectorDropdown');
+            const gameOptions = document.getElementById('gameOptions');
+            const gameSearch = document.getElementById('gameSearch');
+            const selectedGameName = document.getElementById('selectedGameName');
+            const selectedGameLogo = document.getElementById('selectedGameLogo');
             const mainContainer = document.getElementById('mainContainer');
             const dynamicGameName = document.getElementById('dynamicGameName');
             const gameLogo = document.getElementById('gameLogo');
             const registerBtn = document.getElementById('registerBtn');
             const downloadBtn = document.getElementById('downloadBtn');
             
-            // Check localStorage for saved game
-            const savedGame = localStorage.getItem('selectedGame');
-            if (savedGame) {
-                gameSelector.value = savedGame;
-                updateGameInterface(savedGame);
+            // Create game options
+            Object.keys(gameData).forEach(gameName => {
+                const gameOption = document.createElement('div');
+                gameOption.className = 'game-option';
+                gameOption.innerHTML = `
+                    <img src="${gameData[gameName].logo || 'default-logo.png'}" alt="${gameName} Logo">
+                    <span>${gameName}</span>
+                `;
+                gameOption.addEventListener('click', () => {
+                    selectGame(gameName);
+                });
+                gameOptions.appendChild(gameOption);
+            });
+            
+            // Toggle dropdown
+            gameSelectorBtn.addEventListener('click', () => {
+                gameSelectorDropdown.classList.toggle('show');
+                if (gameSelectorDropdown.classList.contains('show')) {
+                    gameSearch.focus();
+                }
+            });
+            
+            // Search functionality
+            gameSearch.addEventListener('input', () => {
+                const searchTerm = gameSearch.value.toLowerCase();
+                const options = gameOptions.querySelectorAll('.game-option');
+                
+                options.forEach(option => {
+                    const gameName = option.querySelector('span').textContent.toLowerCase();
+                    if (gameName.includes(searchTerm)) {
+                        option.style.display = 'flex';
+                    } else {
+                        option.style.display = 'none';
+                    }
+                });
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!gameSelectorBtn.contains(e.target) && !gameSelectorDropdown.contains(e.target)) {
+                    gameSelectorDropdown.classList.remove('show');
+                }
+            });
+            
+            // Select game function
+            function selectGame(gameName) {
+                selectedGameName.textContent = gameName;
+                selectedGameLogo.src = gameData[gameName].logo || 'default-logo.png';
+                gameSelectorDropdown.classList.remove('show');
+                
+                // Save to localStorage
+                localStorage.setItem('selectedGame', gameName);
+                updateGameInterface(gameName);
                 mainContainer.classList.remove('disabled-content');
             }
             
-            // Game selector change event
-            gameSelector.addEventListener('change', function() {
-                const selectedGame = this.value;
-                localStorage.setItem('selectedGame', selectedGame);
-                updateGameInterface(selectedGame);
-                mainContainer.classList.remove('disabled-content');
-            });
+            // Check localStorage for saved game
+            const savedGame = localStorage.getItem('selectedGame');
+            if (savedGame) {
+                selectGame(savedGame);
+            }
             
             function updateGameInterface(gameName) {
                 // Update the tool name
@@ -916,7 +1019,7 @@
             
             // Other event listeners
             document.getElementById('telegramBtn').addEventListener('click', () => {
-                window.open('https://telegram.dog/EarningScripter1', '_blank');
+                window.open('https://t.me/example', '_blank');
             });
             
             document.getElementById('periodNumber').addEventListener('input', function() {
