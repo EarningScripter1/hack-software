@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WINGO HACK  PRO</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap');
+        
+        :root {
+            --primary: #1e3a8a;
+            --primary-light: #3b82f6;
+            --secondary: #10b981;
+            --big-color: #f59e0b;
+            --small-color: #06b6d4;
+            --red-color: #ef4444;
+            --green-color: #10b981;
+            --danger: #ef4444;
+            --warning: #fbbf24;
+            --dark: #0f172a;
+            --darker: #020617;
+            --light: #e2e8f0;
+            --lighter: #f8fafc;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: var(--darker);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: var(--lighter);
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Game Selector */
+        .game-selector-container {
+            width: 100%;
+            max-width: 450px;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .game-selector {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid var(--primary-light);
+            border-radius: 12px;
+            color: var(--light);
+            font-size: 14px;
+            outline: none;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+            transition: all 0.2s ease;
+        }
+
+        .game-selector:hover {
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .game-selector:focus {
+            border-color: var(--secondary);
+        }
+
+        .game-selector option {
+            background: var(--dark);
+            color: var(--light);
+            padding: 10px;
+        }
+
+        .selector-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: var(--primary-light);
+        }
+
+        /* Main Container */
+        .container {
+            width: 100%;
+            max-width: 450px;
+            background: rgba(15, 23, 42, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid var(--primary-light);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Winner Container */
+        .winner-container {
+            text-align: center;
+            padding: 15px;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 12px;
+            margin-bottom: 18px;
+            border: 1px solid var(--primary-light);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .winner-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(59, 130, 246, 0.2), 
+                transparent);
+            transition: left 0.8s ease-out;
+        }
+
+        .winner-container:hover::after {
+            left: 100%;
+        }
+
+        .winner-text {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--light);
+            letter-spacing: 0.5px;
+        }
+
+        /* Online Users */
+        .online-users {
+            text-align: center;
+            padding: 12px;
+            background: rgba(16, 185, 129, 0.1);
+            border-radius: 12px;
+            margin-bottom: 25px;
+            font-size: 14px;
+            color: var(--secondary);
+            border: 1px solid var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease-out;
+        }
+
+        .online-users:hover {
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .online-users i {
+            margin-right: 8px;
+            font-size: 12px;
+        }
+
+        /* Game Header */
+        .game-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .game-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            margin-right: 18px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 2px solid var(--primary-light);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+            animation: pulseLogo 4s infinite ease-in-out;
+        }
+
+        @keyframes pulseLogo {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 15px rgba(59, 130, 246, 0.3); }
+            50% { transform: scale(1.02); box-shadow: 0 0 20px rgba(59, 130, 246, 0.5); }
+        }
+
+        .game-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 5px;
+        }
+
+        .game-info {
+            flex: 1;
+        }
+
+        .game-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: var(--lighter);
+            letter-spacing: 1px;
+            background: linear-gradient(90deg, var(--light), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
+        }
+
+        .game-about {
+            font-style: italic;
+            font-size: 12px;
+            opacity: 0.7;
+            color: var(--light);
+            letter-spacing: 0.3px;
+        }
+
+        /* Game Type Selector */
+        .game-type-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 12px;
+            padding: 10px;
+            border: 1px solid var(--primary-light);
+        }
+
+        .game-type {
+            flex: 1;
+            padding: 12px 8px;
+            text-align: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--light);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease-out;
+            margin: 0 5px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .game-type.selected {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .game-type:not(.selected):hover {
+            background: rgba(59, 130, 246, 0.2);
+        }
+
+        /* Prediction Container */
+        .prediction-container {
+            background: rgba(15, 23, 42, 0.7);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border: 1px solid var(--primary-light);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.1);
+        }
+
+        .server-status {
+            display: flex;
+            align-items: center;
+            margin-bottom: 18px;
+            font-size: 14px;
+            color: var(--light);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--secondary);
+            border-radius: 50%;
+            margin-right: 12px;
+            box-shadow: 0 0 10px var(--secondary);
+            animation: pulse 2s infinite ease-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.7; transform: scale(0.95); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        /* Input Group */
+        .input-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: var(--light);
+            letter-spacing: 0.3px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--primary-light);
+            border-radius: 10px;
+            color: white;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.2s ease-out;
+            letter-spacing: 0.5px;
+        }
+
+        .input-group input:focus {
+            border-color: var(--secondary);
+            background: rgba(0, 0, 0, 0.4);
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
+        }
+
+        .error-message {
+            position: absolute;
+            bottom: -20px;
+            left: 0;
+            color: var(--danger);
+            font-size: 11px;
+            opacity: 0;
+            transition: opacity 0.2s ease-out;
+        }
+
+        .shake {
+            animation: shake 0.4s ease-out both;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+
+        /* Flip Card */
+        .flip-card {
+            width: 70px;
+            height: 90px;
+            margin: 25px auto;
+            perspective: 1000px;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.4s ease-out;
+            transform-style: preserve-3d;
+            border-radius: 12px;
+        }
+
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .flip-card-front {
+            background: rgba(30, 30, 40, 0.9);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+        }
+
+        .flip-card-back {
+            background: var(--small-color);
+            transform: rotateY(180deg);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            font-weight: 800;
+            color: white;
+            box-shadow: 0 0 20px var(--small-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .flip-card-back.big-red {
+            background: linear-gradient(135deg, var(--big-color), var(--red-color));
+            box-shadow: 0 0 20px var(--big-color), 0 0 20px var(--red-color);
+        }
+
+        .flip-card-back.big-green {
+            background: linear-gradient(135deg, var(--big-color), var(--green-color));
+            box-shadow: 0 0 20px var(--big-color), 0 0 20px var(--green-color);
+        }
+
+        .flip-card-back.small-red {
+            background: linear-gradient(135deg, var(--small-color), var(--red-color));
+            box-shadow: 0 0 20px var(--small-color), 0 0 20px var(--red-color);
+        }
+
+        .flip-card-back.small-green {
+            background: linear-gradient(135deg, var(--small-color), var(--green-color));
+            box-shadow: 0 0 20px var(--small-color), 0 0 20px var(--green-color);
+        }
+
+        .result-main {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .result-secondary {
+            font-size: 12px;
+        }
+
+        .flip-card-icon {
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .flip-card-text {
+            font-size: 7px;
+            color: var(--light);
+            text-align: center;
+            max-width: 80%;
+        }
+
+        /* Buttons */
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease-out;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(255,255,255,0) 0%,
+                rgba(255,255,255,0) 45%,
+                rgba(255,255,255,0.1) 48%,
+                rgba(255,255,255,0.1) 52%,
+                rgba(255,255,255,0) 55%,
+                rgba(255,255,255,0) 100%
+            );
+            transform: rotate(30deg);
+            transition: all 0.5s ease-out;
+        }
+
+        .btn:hover::after {
+            left: 100%;
+            top: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary), var(--primary-light));
+            color: white;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.6);
+        }
+
+        .btn-warning {
+            background: linear-gradient(45deg, var(--warning), #f59e0b);
+            color: #000;
+            box-shadow: 0 0 15px rgba(251, 191, 36, 0.4);
+        }
+
+        .btn-warning:hover {
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.6);
+        }
+
+        .btn-danger {
+            background: linear-gradient(45deg, var(--danger), #dc2626);
+            color: white;
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
+        }
+
+        .btn-danger:hover {
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.6);
+        }
+
+        .btn-success {
+            background: linear-gradient(45deg, #10b981, #059669);
+            color: white;
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-success:hover {
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.6);
+        }
+
+        /* Warning Text */
+        .warning-text {
+            font-size: 12px;
+            text-align: center;
+            margin: 20px 0;
+            color: var(--warning);
+            font-style: italic;
+            letter-spacing: 0.3px;
+            line-height: 1.5;
+            padding: 12px;
+            background: rgba(251, 191, 36, 0.08);
+            border-radius: 8px;
+            border-left: 3px solid var(--warning);
+            animation: glowWarning 3s infinite alternate;
+        }
+
+        @keyframes glowWarning {
+            from { box-shadow: 0 0 5px rgba(251, 191, 36, 0.1); }
+            to { box-shadow: 0 0 10px rgba(251, 191, 36, 0.3); }
+        }
+
+        .btn-icon {
+            margin-right: 10px;
+            font-size: 14px;
+        }
+
+        /* Disabled state */
+        .disabled-content {
+            pointer-events: none;
+            opacity: 0.5;
+            filter: blur(1px);
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-selector-container">
+        <select class="game-selector" id="gameSelector">
+            <option value="" disabled selected>SELECT YOUR GAME</option>
+            <option value="91Club Hack">91Club Hack</option>
+            <option value="55Club Hack">55Club Hack</option>
+            <option value="In999 Hack">In999 Hack</option>
+            <option value="Okwin Hack">Okwin Hack</option>
+            <option value="Tiranga Hack">Tiranga Hack</option>
+            <option value="BigDaddy Hack">BigDaddy Hack</option>
+            <option value="Big Mumbai Hack">Big Mumbai Hack</option>
+            <option value="Daman Games Hack">Daman Games Hack</option>
+            <option value="Diuwin Hack">Diuwin Hack</option>
+            <option value="Bdgwin Hack">Bdgwin Hack</option>
+            <option value="Tc Lottery Hack">Tc Lottery Hack</option>
+            <option value="Jalwa Win Hack">Jalwa Win Hack</option>
+            <option value="82 Lottery Hack">82 Lottery Hack</option>
+            <option value="Aviator God Hack">Aviator God Hack</option>
+            <option value="Bounty Game Hack">Bounty Game Hack</option>
+            <option value="Lottery7 Hack">Lottery7 Hack</option>
+            <option value="Kwg Game Hack">Kwg Game Hack</option>
+            <option value="88 Club Hack">88 Club Hack</option>
+            <option value="Goa Games Hack">Goa Games Hack</option>
+            <option value="Sikkim Hack">Sikkim Hack</option>
+        </select>
+        <i class="fas fa-chevron-down selector-icon"></i>
+    </div>
+
+    <div class="container disabled-content" id="mainContainer">
+        <div class="winner-container">
+            <div class="winner-text" id="winnerText">User {random_620-999}****{random_000-999} Win ₹{random_500-15000}</div>
+        </div>
+        
+        <div class="online-users">
+            <i class="fas fa-users"></i>
+            <span id="onlineUsers">Online Users: {random_500-7000}</span>
+        </div>
+        
+        <div class="game-header">
+            <div class="game-logo">
+                <img src="default-logo.png" alt="Game Logo" id="gameLogo">
+            </div>
+            <div class="game-info">
+                <div class="game-name" id="dynamicGameName">Wingo Hack 🔥</div>
+                <div class="game-about">Advanced Hack 🔥 ! , accuracy up to 99%.</div>
+            </div>
+        </div>
+        
+        <div class="game-type-container">
+            <div class="game-type" data-type="30s">WINGO 30s</div>
+            <div class="game-type selected" data-type="1m">WINGO 1m</div>
+            <div class="game-type" data-type="3m">WINGO 3m</div>
+        </div>
+        
+        <div class="prediction-container">
+            <div class="server-status">
+                <div class="status-dot"></div>
+                <div>Server: Active</div>
+            </div>
+            
+            <div class="input-group">
+                <label for="periodNumber">ENTER PERIOD NO:</label>
+                <input type="text" id="periodNumber" placeholder="Enter period number...">
+                <div class="error-message" id="errorMessage">Please enter a period number</div>
+            </div>
+            
+            <div class="flip-card" id="flipCard">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <i class="fas fa-dice flip-card-icon"></i>
+                        <div class="flip-card-text">Click Start to predict</div>
+                    </div>
+                    <div class="flip-card-back" id="resultCard">
+                        <div class="result-main" id="mainResult">--</div>
+                        <div class="result-secondary" id="secondaryResult">--</div>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="btn btn-primary" id="startBtn">
+                <i class="fas fa-play btn-icon"></i> START PREDICTION
+            </button>
+            
+            <div class="warning-text">
+                Register with our system to unlock full features
+            </div>
+            
+            <button class="btn btn-warning" id="registerBtn">
+                <i class="fas fa-user-plus btn-icon"></i> REGISTER NOW !
+            </button>
+            
+            <button class="btn btn-danger" id="telegramBtn">
+                <i class="fab fa-telegram btn-icon"></i> JOIN TELEGRAM
+            </button>
+
+            <button class="btn btn-success" id="downloadBtn">
+                <i class="fas fa-download btn-icon"></i> DOWNLOAD APK
+            </button>
+        </div>
+    </div>
+    
+    <script>
+        // Game logos and register links mapping
+        const gameData = {
+            '91Club Hack': {
+                logo: 'logo1.png',
+                registerLink: 'https://www.91appa.com/#/register?invitationCode=55817282407'
+            },
+            '55Club Hack': {
+                logo: 'logo2.png',
+                registerLink: 'https://55club.win/#/register?invitationCode=38415397723'
+            },
+            'In999 Hack': {
+                logo: 'logo3.png',
+                registerLink: 'https://in999.win/#/register?invitationCode=38416166896'
+            },
+            'Okwin Hack': {
+                logo: 'logo4.png',
+                registerLink: 'https://okowin.in/#/register?invitationCode=23266508596'
+            },
+            'Tiranga Hack': {
+                logo: 'logo5.png',
+                registerLink: 'https://www.tirangagame.top/#/register?invitationCode=84527328169'
+            },
+            'BigDaddy Hack': {
+                logo: 'logo6.png',
+                registerLink: 'https://bdg678.com/#/register?invitationCode=nocKS4396'
+            },
+            'Big Mumbai Hack': {
+                logo: 'logo7.png',
+                registerLink: 'https://www.bigmumbaid.com/#/register?invitationCode=8371158380'
+            },
+            'Daman Games Hack': {
+                logo: 'logo8.png',
+                registerLink: 'https://damanworld.info/#/register?invitationCode=utRll283574'
+            },
+            'Diuwin Hack': {
+                logo: 'logo9.png',
+                registerLink: 'https://3diuwin.com/#/register?invitationCode=37684147199'
+            },
+            'Bdgwin Hack': {
+                logo: 'logo10.png',
+                registerLink: 'https://bdgwin2.com/#/register?invitationCode=887851019956'
+            },
+            'Tc Lottery Hack': {
+                logo: 'logo11.png',
+                registerLink: 'https://tc9987.com/register?invite_code=635FC13282042'
+            },
+            'Jalwa Win Hack': {
+                logo: 'logo12.png',
+                registerLink: 'https://www.jalwa.me/#/register?invitationCode=47523182925'
+            },
+            '82 Lottery Hack': {
+                logo: 'logo13.png',
+                registerLink: 'https://82bet33.com/#/register?invitationCode=334611062977'
+            },
+            'Aviator God Hack': {
+                logo: 'logo14.png',
+                registerLink: 'https://aviatorgod4.com/#/register?invitationCode=43355467440'
+            },
+            'Bounty Game Hack': {
+                logo: 'logo15.png',
+                registerLink: 'https://bountygame.in/#/register?invitationCode=131883375028'
+            },
+            'Lottery7 Hack': {
+                logo: 'logo16.png',
+                registerLink: 'https://blottery7.com/#/register?invitationCode=5172514402788'
+            },
+            'Kwg Game Hack': {
+                logo: 'logo17.png',
+                registerLink: 'http://www.kwg-games.net/#/register?invitationCode=99A4624376'
+            },
+            '88 Club Hack': {
+                logo: 'logo18.png',
+                registerLink: 'https://88club.co.in/#/register?invitationCode=6984982257916'
+            },
+            'Goa Games Hack': {
+                logo: 'logo19.png',
+                registerLink: 'https://www.goagame.co/#/register?invitationCode=75168335500'
+            },
+            'Sikkim Hack': {
+                logo: 'logo20.png',
+                registerLink: 'https://www.18sikkim.com/#/register?invitationCode=32878171541'
+            }
+        };
+
+        // Game selection functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const gameSelector = document.getElementById('gameSelector');
+            const mainContainer = document.getElementById('mainContainer');
+            const dynamicGameName = document.getElementById('dynamicGameName');
+            const gameLogo = document.getElementById('gameLogo');
+            const registerBtn = document.getElementById('registerBtn');
+            const downloadBtn = document.getElementById('downloadBtn');
+            
+            // Check localStorage for saved game
+            const savedGame = localStorage.getItem('selectedGame');
+            if (savedGame) {
+                gameSelector.value = savedGame;
+                updateGameInterface(savedGame);
+                mainContainer.classList.remove('disabled-content');
+            }
+            
+            // Game selector change event
+            gameSelector.addEventListener('change', function() {
+                const selectedGame = this.value;
+                localStorage.setItem('selectedGame', selectedGame);
+                updateGameInterface(selectedGame);
+                mainContainer.classList.remove('disabled-content');
+            });
+            
+            function updateGameInterface(gameName) {
+                // Update the tool name
+                dynamicGameName.textContent = gameName.toUpperCase();
+                
+                // Update the game logo
+                const gameInfo = gameData[gameName] || {};
+                gameLogo.src = gameInfo.logo || 'default-logo.png';
+                gameLogo.alt = `${gameName} Logo`;
+                
+                // Update the register link
+                if (gameInfo.registerLink) {
+                    registerBtn.onclick = () => {
+                        window.open(gameInfo.registerLink, '_blank');
+                    };
+                }
+                
+                // Update the title tag
+                document.title = gameName.toUpperCase();
+            }
+            
+            // Download APK button
+            downloadBtn.addEventListener('click', () => {
+                // Replace with your actual APK download link
+                window.location.href = 'combo.apk';
+            });
+            
+            // Optimized winner text update
+            let lastWinnerUpdate = 0;
+            function updateWinner(timestamp) {
+                if (!lastWinnerUpdate || timestamp - lastWinnerUpdate >= 2500) {
+                    lastWinnerUpdate = timestamp;
+                    const randomId1 = Math.floor(Math.random() * 380) + 620;
+                    const randomId2 = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+                    const randomAmount = Math.floor(Math.random() * 14500) + 500;
+                    document.getElementById('winnerText').textContent = 
+                        `User ${randomId1}****${randomId2} Win ₹${randomAmount.toLocaleString()}`;
+                }
+                requestAnimationFrame(updateWinner);
+            }
+
+            // Optimized online users update
+            let lastUsersUpdate = 0;
+            function updateOnlineUsers(timestamp) {
+                if (!lastUsersUpdate || timestamp - lastUsersUpdate >= 3000) {
+                    lastUsersUpdate = timestamp;
+                    const randomUsers = Math.floor(Math.random() * 6500) + 500;
+                    document.getElementById('onlineUsers').textContent = `Online Users: ${randomUsers.toLocaleString()}`;
+                }
+                requestAnimationFrame(updateOnlineUsers);
+            }
+
+            // Start animation frame loops
+            requestAnimationFrame(updateWinner);
+            requestAnimationFrame(updateOnlineUsers);
+
+            // Game type selection
+            const gameTypes = document.querySelectorAll('.game-type');
+            gameTypes.forEach(type => {
+                type.addEventListener('click', function() {
+                    gameTypes.forEach(t => t.classList.remove('selected'));
+                    this.classList.add('selected');
+                });
+            });
+            
+            // Handle start button click
+            document.getElementById('startBtn').addEventListener('click', function() {
+                const periodNumber = document.getElementById('periodNumber').value.trim();
+                const flipCard = document.getElementById('flipCard');
+                const mainResult = document.getElementById('mainResult');
+                const secondaryResult = document.getElementById('secondaryResult');
+                const errorMessage = document.getElementById('errorMessage');
+                const inputField = document.getElementById('periodNumber');
+                const startBtn = this;
+                
+                if (!periodNumber) {
+                    errorMessage.style.opacity = '1';
+                    inputField.classList.add('shake');
+                    setTimeout(() => {
+                        inputField.classList.remove('shake');
+                    }, 400);
+                    return;
+                }
+                
+                errorMessage.style.opacity = '0';
+                startBtn.disabled = true;
+                startBtn.innerHTML = '<i class="fas fa-cog fa-spin btn-icon"></i> PROCESSING...';
+                
+                if (flipCard.classList.contains('flipped')) {
+                    flipCard.classList.remove('flipped');
+                }
+                
+                setTimeout(() => {
+                    // Randomly choose Big or Small
+                    const isBig = Math.random() > 0.5;
+                    // Randomly choose Red or Green
+                    const isRed = Math.random() > 0.5;
+                    
+                    // Set the main and secondary results
+                    mainResult.textContent = isBig ? 'BIG' : 'SMALL';
+                    secondaryResult.textContent = isRed ? 'RED' : 'GREEN';
+                    
+                    // Set the appropriate class based on combination
+                    const resultCard = document.getElementById('resultCard');
+                    if (isBig && isRed) {
+                        resultCard.className = 'flip-card-back big-red';
+                    } else if (isBig && !isRed) {
+                        resultCard.className = 'flip-card-back big-green';
+                    } else if (!isBig && isRed) {
+                        resultCard.className = 'flip-card-back small-red';
+                    } else {
+                        resultCard.className = 'flip-card-back small-green';
+                    }
+                    
+                    setTimeout(() => {
+                        flipCard.classList.add('flipped');
+                        startBtn.disabled = false;
+                        startBtn.innerHTML = '<i class="fas fa-play btn-icon"></i> START PREDICTION';
+                    }, 800);
+                    
+                }, flipCard.classList.contains('flipped') ? 400 : 0);
+            });
+            
+            // Other event listeners
+            document.getElementById('telegramBtn').addEventListener('click', () => {
+                window.open('https://telegram.dog/EarningScripter1', '_blank');
+            });
+            
+            document.getElementById('periodNumber').addEventListener('input', function() {
+                const flipCard = document.getElementById('flipCard');
+                if (flipCard.classList.contains('flipped')) {
+                    flipCard.classList.remove('flipped');
+                }
+                document.getElementById('errorMessage').style.opacity = '0';
+            });
+
+            // Add hover effect to winner container
+            const winnerContainer = document.querySelector('.winner-container');
+            winnerContainer.addEventListener('mouseenter', () => {
+                winnerContainer.querySelector('::after').style.left = '100%';
+            });
+        });
+    </script>
+</body>
+</html>
