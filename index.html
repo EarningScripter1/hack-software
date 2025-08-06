@@ -729,101 +729,92 @@
             </button>
 
             <a href="Combo Max 🔥!.apk" id="downloadBtn" class="btn btn-success">
-    <i class="fas fa-download btn-icon"></i> Download APK
-</a>
-
-
-
+                <i class="fas fa-download btn-icon"></i> Download APK
+            </a>
         </div>
     </div>
     
     <script>
+        // Function to open URL in external browser
+        function openInBrowser(url) {
+            // This will be handled by Android WebView's shouldOverrideUrlLoading
+            window.open(url, '_system');
+        }
+
         // Game logos and register links mapping
         const gameData = {
             '91Club Hack': {
                 logo: 'logo1.png',
-                registerLink: 'https://aatclub.com/#/register?invitationCode=55817282407'
+                registerLink: 'https://colorsignup.github.io/ES1/91club'
             },
             '55Club Hack': {
                 logo: 'logo2.png',
-                registerLink: 'https://55club.game/#/register?invitationCode=38415397723'
+                registerLink: 'https://colorsignup.github.io/ES1/55club'
             },
             'In999 Hack': {
                 logo: 'logo3.png',
-                registerLink: 'https://in66.in/#/register?invitationCode=38416166896'
-            },
-           '66 Lottery Hack': {
-                logo: 'logo21.png',
-                registerLink: 'https://www.66lottery9.com/#/pages/login/register?invitationCode=1406619140'
-            }, 
-            'Okwin Hack': {
-                logo: 'logo4.png',
-                registerLink: 'https://okwinslots5.com/#/register?invitationCode=23266508596'
-            },
-            'Tiranga Hack': {
-                logo: 'logo5.png',
-                registerLink: 'https://tgdream.org/#/register?invitationCode=84527328169'
-            },
-            'BigDaddy Hack': {
-                logo: 'logo6.png',
-                registerLink: 'https://bdgab.com/#/register?invitationCode=nocKS4396'
-            },
-            'Big Mumbai Hack': {
-                logo: 'logo7.png',
-                registerLink: 'https://www.bigmumbaiy.com/#/register?invitationCode=8371158380'
+                registerLink: 'https://colorsignup.github.io/ES1/In999'
             },
             'Daman Games Hack': {
                 logo: 'logo8.png',
-                registerLink: 'https://damangames.bet/#/register?invitationCode=utRll283574'
+                registerLink: 'https://colorsignup.github.io/ES1/Damangames'
             },
-            'Diuwin Hack': {
-                logo: 'logo9.png',
-                registerLink: 'https://9diuwin.com/#/register?invitationCode=37684147199'
+            'Okwin Hack': {
+                logo: 'logo4.png',
+                registerLink: 'https://colorsignup.github.io/ES1/Okwin'
+            },
+            'Tiranga Hack': {
+                logo: 'logo5.png',
+                registerLink: 'https://colorsignup.github.io/ES1/Tiranga'
+            },
+            'BigDaddy Hack': {
+                logo: 'logo6.png',
+                registerLink: 'https://colorsignup.github.io/ES1/Bigdaddygame'
             },
             'Bdgwin Hack': {
+                logo: 'logo7.png',
+                registerLink: 'https://colorsignup.github.io/ES1/Bdgwin'
+            },
+            'Big Mumbai Hack': {
+                logo: 'logo8.png',
+                registerLink: 'https://colorsignup.github.io/ES1/Bigmumbai'
+            },
+            'Jalwa Hack': {
+                logo: 'logo9.png',
+                registerLink: 'https://colorsignup.github.io/ES1/Jalwa.html'
+            },
+            'Diuwin Hack': {
                 logo: 'logo10.png',
-                registerLink: 'https://bdgwinvip9.com/#/register?invitationCode=887851019956'
+                registerLink: 'https://colorsignup.github.io/ES1/Diuwin'
             },
-            'Tc Lottery Hack': {
+            'TashanWin Hack': {
                 logo: 'logo11.png',
-                registerLink: 'https://tc9987.club/register?invite_code=635FC13282042'
+                registerLink: 'https://colorsignup.github.io/ES1/Tashan'
             },
-            'Jalwa Win Hack': {
+            '82lottery Hack': {
                 logo: 'logo12.png',
-                registerLink: 'https://www.jalwa.live/#/register?invitationCode=47523182925'
+                registerLink: 'https://colorsignup.github.io/ES1/82lottery'
             },
-            '82 Lottery Hack': {
+            '51Game Hack': {
                 logo: 'logo13.png',
-                registerLink: 'https://82bet11.com/#/register?invitationCode=334611062977'
+                registerLink: 'https://colorsignup.github.io/ES1/51game'
             },
-            'Aviator God Hack': {
+            'Raja Lottery Hack': {
                 logo: 'logo14.png',
-                registerLink: 'https://aviatorgod1.in/#/register?invitationCode=43355467440'
+                registerLink: 'https://colorsignup.github.io/ES1/Rajalottery.html'
             },
-            'Bounty Game Hack': {
+            'Bdg Slots Hack': {
                 logo: 'logo15.png',
-                registerLink: 'https://bountygame.in/#/register?invitationCode=131883375028'
-            },
-            'Lottery7 Hack': {
-                logo: 'logo16.png',
-                registerLink: 'https://elottery7.com/#/register?invitationCode=5172514402788'
+                registerLink: 'https://colorsignup.github.io/ES1/bdgslots'
             },
             'Kwg Game Hack': {
+                logo: 'logo16.png',
+                registerLink: 'https://colorsignup.github.io/ES1/Kwg'
+            },
+            'Tc Lottery Hack': {
                 logo: 'logo17.png',
-                registerLink: 'http://kwg5.in/#/register?invitationCode=99A4624376'
+                registerLink: 'https://colorsignup.github.io/ES1/Tclottery'
             },
-            '88 Club Hack': {
-                logo: 'logo18.png',
-                registerLink: 'https://88club.co.in/#/register?invitationCode=6984982257916'
-            },
-            'Goa Games Hack': {
-                logo: 'logo19.png',
-                registerLink: 'https://goagamed.com/#/register?invitationCode=75168335500'
-            },
-            'Sikkim Hack': {
-                logo: 'logo20.png',
-                registerLink: 'https://www.18sikkim.com/#/register?invitationCode=32878171541'
-            }
         };
 
         // Game selection functionality
@@ -914,7 +905,7 @@
                 // Update the register link
                 if (gameInfo.registerLink) {
                     registerBtn.onclick = () => {
-                        window.open(gameInfo.registerLink, '_blank');
+                        openInBrowser(gameInfo.registerLink);
                     };
                 }
                 
@@ -923,9 +914,9 @@
             }
             
             // Download APK button
-            downloadBtn.addEventListener('click', () => {
-                // Replace with your actual APK download link
-                window.location.href = 'combo.apk';
+            downloadBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                openInBrowser('combo.apk');
             });
             
             // Optimized winner text update
@@ -1026,7 +1017,7 @@
             
             // Other event listeners
             document.getElementById('telegramBtn').addEventListener('click', () => {
-                window.open('https://t.me/EarningScripter1', '_blank');
+                openInBrowser('https://t.me/EarningScripter1');
             });
             
             document.getElementById('periodNumber').addEventListener('input', function() {
