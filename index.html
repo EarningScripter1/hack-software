@@ -640,9 +640,109 @@
             filter: blur(1px);
             transition: all 0.3s ease;
         }
+
+        /* Telegram Modal */
+        .telegram-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(2, 6, 23, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .telegram-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .telegram-modal-content {
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid var(--primary-light);
+            border-radius: 15px;
+            padding: 25px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.4);
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+
+        .telegram-modal.active .telegram-modal-content {
+            transform: translateY(0);
+        }
+
+        .telegram-modal-icon {
+            font-size: 50px;
+            color: var(--primary-light);
+            margin-bottom: 15px;
+        }
+
+        .telegram-modal-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--light);
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .telegram-modal-text {
+            font-size: 14px;
+            color: var(--light);
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .telegram-modal-btn {
+            background: linear-gradient(45deg, var(--primary), var(--primary-light));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .telegram-modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+        }
+
+        .telegram-modal-btn i {
+            margin-right: 10px;
+        }
     </style>
 </head>
 <body>
+    <!-- Telegram Modal -->
+    <div class="telegram-modal" id="telegramModal">
+        <div class="telegram-modal-content">
+            <div class="telegram-modal-icon">
+                <i class="fab fa-telegram"></i>
+            </div>
+            <h3 class="telegram-modal-title">Join Our Telegram Channel</h3>
+            <p class="telegram-modal-text">Join our Telegram channel to use this hack feature and get updates on new hacks and features!</p>
+            <button class="telegram-modal-btn" id="joinTelegramBtn">
+                <i class="fab fa-telegram"></i> Join Telegram
+            </button>
+        </div>
+    </div>
+
     <div class="game-selector-container">
         <div class="game-selector-btn" id="gameSelectorBtn">
             <div class="selected-option">
@@ -830,6 +930,11 @@
             const gameLogo = document.getElementById('gameLogo');
             const registerBtn = document.getElementById('registerBtn');
             const downloadBtn = document.getElementById('downloadBtn');
+            const telegramModal = document.getElementById('telegramModal');
+            const joinTelegramBtn = document.getElementById('joinTelegramBtn');
+            
+            // Track if a game has been selected before
+            let firstGameSelected = false;
             
             // Create game options
             Object.keys(gameData).forEach(gameName => {
@@ -885,12 +990,43 @@
                 localStorage.setItem('selectedGame', gameName);
                 updateGameInterface(gameName);
                 mainContainer.classList.remove('disabled-content');
+                
+                // Show telegram modal if this is not the first game selection
+                if (firstGameSelected) {
+                    showTelegramModal();
+                } else {
+                    firstGameSelected = true;
+                }
             }
+            
+            // Show telegram modal
+            function showTelegramModal() {
+                telegramModal.classList.add('active');
+            }
+            
+            // Hide telegram modal
+            function hideTelegramModal() {
+                telegramModal.classList.remove('active');
+            }
+            
+            // Join Telegram button
+            joinTelegramBtn.addEventListener('click', () => {
+                openInBrowser('https://telegram.dog/EarningScripter1');
+                hideTelegramModal();
+            });
+            
+            // Close modal when clicking outside
+            telegramModal.addEventListener('click', (e) => {
+                if (e.target === telegramModal) {
+                    hideTelegramModal();
+                }
+            });
             
             // Check localStorage for saved game
             const savedGame = localStorage.getItem('selectedGame');
             if (savedGame) {
                 selectGame(savedGame);
+                firstGameSelected = true; // Don't show modal if loading saved game
             }
             
             function updateGameInterface(gameName) {
