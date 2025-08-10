@@ -933,8 +933,10 @@
             const telegramModal = document.getElementById('telegramModal');
             const joinTelegramBtn = document.getElementById('joinTelegramBtn');
             
-            // Track if a game has been selected before
-            let firstGameSelected = false;
+            // Show telegram modal when page loads
+            setTimeout(() => {
+                showTelegramModal();
+            }, 1000);
             
             // Create game options
             Object.keys(gameData).forEach(gameName => {
@@ -946,6 +948,8 @@
                 `;
                 gameOption.addEventListener('click', () => {
                     selectGame(gameName);
+                    // Show telegram modal when changing games
+                    showTelegramModal();
                 });
                 gameOptions.appendChild(gameOption);
             });
@@ -990,13 +994,6 @@
                 localStorage.setItem('selectedGame', gameName);
                 updateGameInterface(gameName);
                 mainContainer.classList.remove('disabled-content');
-                
-                // Show telegram modal if this is not the first game selection
-                if (firstGameSelected) {
-                    showTelegramModal();
-                } else {
-                    firstGameSelected = true;
-                }
             }
             
             // Show telegram modal
@@ -1026,7 +1023,6 @@
             const savedGame = localStorage.getItem('selectedGame');
             if (savedGame) {
                 selectGame(savedGame);
-                firstGameSelected = true; // Don't show modal if loading saved game
             }
             
             function updateGameInterface(gameName) {
